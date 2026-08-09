@@ -1,0 +1,603 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #f1f1f1;
+    color: #111827;
+}
+
+/* CABEÇALHO */
+
+#cabecalho {
+    background: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 35px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.logo img {
+    width: 200px;
+    max-height: 800px;
+    object-fit: contain;
+}
+
+.header-direita {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.login-area {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.icone-login {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #eff6ff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+}
+
+.texto-login {
+    display: flex;
+    flex-direction: column;
+}
+
+.login-link {
+    font-size: 22px;
+    font-weight: bold;
+    color: #111827;
+    text-decoration: none;
+}
+
+.login-link:hover {
+    color: #2563eb;
+}
+
+.cadastro-link {
+    font-size: 13px;
+    color: #6b7280;
+    text-decoration: none;
+}
+
+.cadastro-link:hover {
+    color: #2563eb;
+}
+
+.carrinho-btn {
+    width: 58px;
+    height: 58px;
+    border-radius: 14px;
+    background: #2563eb;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    font-size: 25px;
+    cursor: pointer;
+    color: white;
+    transition: 0.3s;
+}
+
+.carrinho-btn:hover {
+    transform: scale(1.05);
+}
+
+#contador-carrinho {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: red;
+    color: white;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    font-size: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* BANNER */
+
+.banner {
+    width: 100%;
+}
+
+.banner img {
+    width: 100%;
+    display: block;
+}
+
+.banner_anuncio {
+    background: #2563eb;
+    color: white;
+    text-align: center;
+    padding: 18px;
+    font-weight: bold;
+    font-size: 20px;
+    letter-spacing: 1px;
+}
+
+/* CARDS */
+
+.cards-area {
+    width: 92%;
+    margin: 50px auto;
+}
+
+.cards-texto {
+    margin-bottom: 30px;
+}
+
+.cards-texto h2 {
+    font-size: 40px;
+    margin-bottom: 10px;
+}
+
+.cards-texto p {
+    color: #6b7280;
+    font-size: 16px;
+}
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 25px;
+}
+
+.carta-venda {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 5px 18px rgba(0,0,0,0.07);
+    transition: 0.3s;
+}
+
+.carta-venda:hover {
+    transform: translateY(-6px);
+}
+
+.raridade {
+    display: inline-block;
+    background: #dbeafe;
+    color: #2563eb;
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 22px;
+}
+
+.carta-venda h3 {
+    font-size: 30px;
+    margin-bottom: 18px;
+}
+
+.preco-carta {
+    display: block;
+    color: #111827;
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 22px;
+}
+
+.carta-venda button {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    background: #2563eb;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.carta-venda button:hover {
+    background: #1d4ed8;
+}
+
+/* PRODUTOS */
+
+.bloco {
+    width: 92%;
+    margin: 50px auto;
+}
+
+.titulo-area {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 35px;
+}
+
+.titulo-area h2 {
+    font-size: 32px;
+    white-space: nowrap;
+}
+
+.linha {
+    width: 100%;
+    height: 3px;
+    background: #2563eb;
+}
+
+.produtos-container {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    flex-wrap: wrap;
+}
+
+.produto-card {
+    width: 220px;
+    background: white;
+    border-radius: 18px;
+    padding: 18px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    transition: 0.3s;
+}
+
+.produto-card:hover {
+    transform: translateY(-8px);
+}
+
+.imagem-produto {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 15px;
+    margin-bottom: 15px;
+    border: 2px solid #ececec;
+}
+
+.imagem-produto img {
+    width: 100%;
+    height: 180px;
+    object-fit: contain;
+}
+
+.produto-card h3 {
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+.preco {
+    display: block;
+    color: #2563eb;
+    font-size: 25px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.botao-comprar,
+.botao-carrinho {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.botao-comprar {
+    background: #2563eb;
+}
+
+.botao-comprar:hover {
+    background: #1d4ed8;
+}
+
+.botao-carrinho {
+    background: #111827;
+    margin-top: 10px;
+}
+
+.botao-carrinho:hover {
+    background: #2563eb;
+}
+
+/* CARRINHO */
+
+#fundo-carrinho {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(7px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 5000;
+}
+
+#carrinho-box {
+    width: 500px;
+    max-height: 600px;
+    overflow-y: auto;
+    background: white;
+    border-radius: 22px;
+    padding: 30px;
+}
+
+.topo-carrinho {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.topo-carrinho button {
+    width: 42px;
+    height: 42px;
+    border: none;
+    background: #ef4444;
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.item-carrinho {
+    background: #f3f4f6;
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 15px;
+}
+
+/* LOGIN */
+
+body.tela {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+body.tela::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("../img/fundologin.jpg");
+    background-size: cover;
+    background-position: center;
+    filter: blur(4px);
+    transform: scale(1.1);
+    z-index: -2;
+}
+
+.form {
+    background: rgba(17, 24, 39, 0.85);
+    width: 360px;
+    padding: 40px 30px;
+    border-radius: 22px;
+    text-align: center;
+    color: white;
+}
+
+.form h1 {
+    margin-bottom: 35px;
+    font-size: 36px;
+    color: #facc15;
+}
+
+.inputBox {
+    position: relative;
+    margin-bottom: 28px;
+}
+
+.inputBox input {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.92);
+    outline: none;
+}
+
+.inputBox label {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    color: #4b5563;
+    transition: 0.3s;
+}
+
+.inputBox input:focus + label,
+.inputBox input:not(:placeholder-shown) + label {
+    top: -12px;
+    left: 10px;
+    background: #2563eb;
+    padding: 3px 8px;
+    color: white;
+    border-radius: 5px;
+    font-size: 12px;
+}
+
+.form button {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    background: #2563eb;
+    border-radius: 12px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.registrar {
+    margin-top: 22px;
+    font-size: 14px;
+    color: #d1d5db;
+}
+
+/* CADASTRO 1 */
+
+.fundocas {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-image: url("../img/fundologin.jpg");
+    background-size: cover;
+    background-position: center;
+
+    background-color: rgba(0, 79, 248, 0.55);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    padding: 30px;
+}
+
+.container-cadastro {
+    width: 600px;
+    background: rgba(17, 24, 39, 0.88);
+    border-radius: 22px;
+    padding: 45px;
+    color: white;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+}
+
+.container-cadastro h2 {
+    text-align: center;
+    margin-bottom: 35px;
+    font-size: 34px;
+    color: #facc15;
+}
+
+.form-cadastro {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+
+.form-cadastro input {
+    width: 100%;
+    height: 55px;
+    padding: 0 15px;
+    border: none;
+    border-radius: 12px;
+    outline: none;
+    background: rgba(255,255,255,0.95);
+    font-size: 15px;
+}
+
+.form-cadastro .full {
+    grid-column: span 2;
+}
+
+.form-cadastro button {
+    grid-column: span 2;
+    width: 100%;
+    height: 58px;
+    border: none;
+    border-radius: 12px;
+    background: #2563eb;
+    color: white;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.form-cadastro button:hover {
+    background: #1d4ed8;
+}
+
+/* CADASTRO 2 (AJUSTADO IGUAL AO 1) */
+
+body.fundocasdois {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+body.fundocasdois::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("../img/fundologin.jpg");
+    background-size: cover;
+    background-position: center;
+    filter: blur(4px);
+    transform: scale(1.1);
+    z-index: -2;
+}
+
+.container-cadastrodois {
+    width: 360px;
+    height: 340px;
+    background: rgba(17, 24, 39, 0.88);
+    padding: 40px 30px;
+    border-radius: 22px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+    color: white;
+}
+
+.container-cadastrodois h2 {
+    text-align: center;
+    font-size: 32px;
+    margin-bottom: 30px;
+    color: #facc15;
+}
+
+.form-cadastro {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.form-cadastro input {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.92);
+    outline: none;
+    font-size: 15px;
+}
+
+.form-cadastro button {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    background: #2563eb;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.form-cadastro button:hover {
+    background: #1d4ed8;
+    transform: translateY(-2px);
+}
+
+#rodape {
+    background: #111827;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin-top: 60px;
+    font-size: 14px;
+}
