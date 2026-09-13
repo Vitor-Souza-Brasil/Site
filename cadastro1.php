@@ -18,16 +18,17 @@
 
         <input name="cpf" type="text" placeholder="CPF" required>
 
-        <input name="tel" type="text" placeholder="Telefone" required>
+        <input name="telefone" type="text" placeholder="Telefone" required>
 
-        <input name="end" class="full" type="text" placeholder="Endereço" required>
+        <input name="endereco" class="full" type="text" placeholder="Endereço" required>
 
         <input name="bairro" type="text" placeholder="Bairro" required>
 
         <input name="CEP" type="text" placeholder="CEP" required>
         
-        <input name="cid" type="text" placeholder="Cidade" required>
-        <input name="est" type="text" placeholder="Estado" required>
+        <input name="cidade" type="text" placeholder="Cidade" required>
+
+        <input name="estado" type="text" placeholder="Estado" required>
 
     <button type="submit"> Próximo </button>
 

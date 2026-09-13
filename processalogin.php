@@ -1,29 +1,31 @@
 <?php
 
+include "app/cons.php";
+require_once "app/DLL.php";
+
 session_start();
 
-$login = trim($_POST['login']);
-$senha = md5($_POST['senha']);
+extract($_POST);
 
-$arquivo = "logins/$login.dat";
+$senha = md5($senha);
 
-if (file_exists($arquivo)) {
+$sql_verifica = "SELECT * FROM loginn WHERE login = '$login'";
+$resultado = banco($server, $user, $password, $db, $sql_verifica);
+$linha = $resultado->fetch_assoc();
 
-    $dados = file($arquivo);
-
-    $senhasalva = trim(
-        str_replace("Senha: ", "", $dados[1])
-    );
-
-    if ($senha == $senhasalva) {
+if($linha == true){
+    $senhasalva = $linha['senha'];
+    if($senhasalva == $senha){
 
         $_SESSION['usuario'] = $login;
 
         header("Location: index.php");
-        exit;
+        exit;   
 
     }
 
+    header("Location: login.php");
+    exit;
 }
 
 header("Location: login.php");
