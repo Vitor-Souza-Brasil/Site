@@ -14,12 +14,6 @@
 
     <h1>Login</h1>
 
-    <?php if (isset($_GET['erro'])): ?>
-        <p style="color:#ef4444; margin-bottom:15px; font-size:14px;">
-            Usuário ou senha inválidos
-        </p>
-    <?php endif; ?>
-
     <div class="inputBox">
         <input type="text" name="login" placeholder=" " required>
         <label>Usuário</label>
