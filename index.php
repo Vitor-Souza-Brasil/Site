@@ -70,7 +70,7 @@ $abrirCarrinhoAutomaticamente = isset($_GET['carrinho']) || isset($_GET['sucesso
 
             <div class="carrinho-btn" onclick="abrirCarrinho()">
                 🛒
-                <span id="contador-carrinho">0</span>
+                <span id="contador-carrinho"><?= $totalItensCarrinho ?></span>
             </div>
 
         </div>
@@ -93,7 +93,7 @@ $abrirCarrinhoAutomaticamente = isset($_GET['carrinho']) || isset($_GET['sucesso
             <div class="linha"></div>
         </div>
 
-<div class="produtos-container">
+        <div class="produtos-container">
             <?php foreach ($produtos as $id => $produto): ?>
                 <?php if ($produto['destaque']): ?>
                     <div class="produto-card">
