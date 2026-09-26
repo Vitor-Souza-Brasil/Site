@@ -1,3 +1,34 @@
+<?php
+
+session_start();
+include "app/produtos.php";
+
+if (!isset($_SESSION['carrinho']) || !is_array($_SESSION['carrinho'])) {
+    $_SESSION['carrinho'] = [];
+}
+
+function contarItensCarrinho(array $carrinho): int {
+    $total = 0;
+    foreach ($carrinho as $item) {
+        $total += $item['quantidade'];
+    }
+    return $total;
+}
+
+function totalCarrinho(array $carrinho): float {
+    $total = 0.0;
+    foreach ($carrinho as $item) {
+        $total += $item['preco'] * $item['quantidade'];
+    }
+    return $total;
+}
+
+$totalItensCarrinho = contarItensCarrinho($_SESSION['carrinho']);
+$totalValorCarrinho = totalCarrinho($_SESSION['carrinho']);
+
+$abrirCarrinhoAutomaticamente = isset($_GET['carrinho']) || isset($_GET['sucesso']) || isset($_GET['erro']);
+
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -26,8 +57,13 @@
                 </div>
 
                 <div class="texto-login">
-                    <a href="login.php" class="login-link">Efetuar Login</a>
-                    <a href="cadastro1.php" class="cadastro-link">Cadastre-se</a>
+                    <?php if (isset($_SESSION['usuario'])): ?>
+                        <span class="login-link"><?= htmlspecialchars($_SESSION['usuario']) ?></span>
+                        <a href="logout.php" class="cadastro-link">Sair</a>
+                    <?php else: ?>
+                        <a href="login.php" class="login-link">Efetuar Login</a>
+                        <a href="cadastro1.php" class="cadastro-link">Cadastre-se</a>
+                    <?php endif; ?>
                 </div>
 
             </div>
@@ -57,44 +93,23 @@
             <div class="linha"></div>
         </div>
 
-        <div class="produtos-container">
-
-            <div class="produto-card">
-                <div class="imagem-produto">
-                    <img src="img/box.png">
-                </div>
-                <h3>Poké Pack Básico</h3>
-                <span class="preco">R$ 19,90</span>
-                <button class="botao-comprar">Comprar</button>
-                <button class="botao-carrinho" onclick="adicionarCarrinho('Poké Pack Básico', 'R$ 19,90')">
-                    Adicionar ao Carrinho
-                </button>
-            </div>
-
-            <div class="produto-card">
-                <div class="imagem-produto">
-                    <img src="img/box2.png">
-                </div>
-                <h3>Charizard Holo Raro</h3>
-                <span class="preco">R$ 89,90</span>
-                <button class="botao-comprar">Comprar</button>
-                <button class="botao-carrinho" onclick="adicionarCarrinho('Charizard Holo Raro', 'R$ 89,90')">
-                    Adicionar ao Carrinho
-                </button>
-            </div>
-
-            <div class="produto-card">
-                <div class="imagem-produto">
-                    <img src="img/box3.png">
-                </div>
-                <h3>Gengar Sombrio</h3>
-                <span class="preco">R$ 49,90</span>
-                <button class="botao-comprar">Comprar</button>
-                <button class="botao-carrinho" onclick="adicionarCarrinho('Gengar Sombrio', 'R$ 49,90')">
-                    Adicionar ao Carrinho
-                </button>
-            </div>
-
+<div class="produtos-container">
+            <?php foreach ($produtos as $id => $produto): ?>
+                <?php if ($produto['destaque']): ?>
+                    <div class="produto-card">
+                        <div class="imagem-produto">
+                            <img src="<?= htmlspecialchars($produto['imagem']) ?>">
+                        </div>
+                        <h3><?= htmlspecialchars($produto['nome']) ?></h3>
+                        <span class="preco"><?= formatarPreco($produto['preco']) ?></span>
+                        <form method="POST" action="carrinho.php">
+                            <input type="hidden" name="produto_id" value="<?= (int) $id ?>">
+                            <input type="hidden" name="acao" value="adicionar">
+                            <button type="submit" class="botao-carrinho">Adicionar ao Carrinho</button>
+                        </form>
+                    </div>
+                <?php endif; ?>
+            <?php endforeach; ?>
         </div>
 
     </div>
@@ -108,67 +123,22 @@
         </div>
 
         <div class="produtos-container">
-
-            <div class="produto-card">
-                <div class="imagem-produto">
-                    <img src="img/box.png">
-                </div>
-                <h3>Pikachu Elétrico</h3>
-                <span class="preco">R$ 24,90</span>
-                <button class="botao-comprar">Comprar</button>
-                <button class="botao-carrinho" onclick="adicionarCarrinho('Pikachu Elétrico', 'R$ 24,90')">
-                    Adicionar ao Carrinho
-                </button>
-            </div>
-
-            <div class="produto-card">
-                <div class="imagem-produto">
-                    <img src="img/box2.png">
-                </div>
-                <h3>Charizard Flame Edition</h3>
-                <span class="preco">R$ 99,90</span>
-                <button class="botao-comprar">Comprar</button>
-                <button class="botao-carrinho" onclick="adicionarCarrinho('Charizard Flame Edition', 'R$ 99,90')">
-                    Adicionar ao Carrinho
-                </button>
-            </div>
-
-            <div class="produto-card">
-                <div class="imagem-produto">
-                    <img src="img/box3.png">
-                </div>
-                <h3>Gengar Shadow Rare</h3>
-                <span class="preco">R$ 59,90</span>
-                <button class="botao-comprar">Comprar</button>
-                <button class="botao-carrinho" onclick="adicionarCarrinho('Gengar Shadow Rare', 'R$ 59,90')">
-                    Adicionar ao Carrinho
-                </button>
-            </div>
-
-            <div class="produto-card">
-                <div class="imagem-produto">
-                    <img src="img/box4.png">
-                </div>
-                <h3>Bulbasaur Starter Pack</h3>
-                <span class="preco">R$ 29,90</span>
-                <button class="botao-comprar">Comprar</button>
-                <button class="botao-carrinho" onclick="adicionarCarrinho('Bulbasaur Starter Pack', 'R$ 29,90')">
-                    Adicionar ao Carrinho
-                </button>
-            </div>
-
-            <div class="produto-card">
-                <div class="imagem-produto">
-                    <img src="img/box5.png">
-                </div>
-                <h3>Squirtle Aqua Edition</h3>
-                <span class="preco">R$ 34,90</span>
-                <button class="botao-comprar">Comprar</button>
-                <button class="botao-carrinho" onclick="adicionarCarrinho('Squirtle Aqua Edition', 'R$ 34,90')">
-                    Adicionar ao Carrinho
-                </button>
-            </div>
-
+            <?php foreach ($produtos as $id => $produto): ?>
+                <?php if (!$produto['destaque']): ?>
+                    <div class="produto-card">
+                        <div class="imagem-produto">
+                            <img src="<?= htmlspecialchars($produto['imagem']) ?>">
+                        </div>
+                        <h3><?= htmlspecialchars($produto['nome']) ?></h3>
+                        <span class="preco"><?= formatarPreco($produto['preco']) ?></span>
+                        <form method="POST" action="carrinho.php">
+                            <input type="hidden" name="produto_id" value="<?= (int) $id ?>">
+                            <input type="hidden" name="acao" value="adicionar">
+                            <button type="submit" class="botao-carrinho">Adicionar ao Carrinho</button>
+                        </form>
+                    </div>
+                <?php endif; ?>
+            <?php endforeach; ?>
         </div>
 
     </div>
@@ -188,82 +158,80 @@
             <button onclick="fecharCarrinho()">X</button>
         </div>
 
+        <?php if (isset($_GET['sucesso'])): ?>
+            <p style="color:#16a34a; font-weight:bold; margin-bottom:15px;">
+                Compra #<?= (int) $_GET['venda_id'] ?> realizada com sucesso!
+                Total: <?= formatarPreco((float) ($_GET['total'] ?? 0)) ?>
+            </p>
+        <?php elseif (isset($_GET['erro'])): ?>
+            <p style="color:#ef4444; font-weight:bold; margin-bottom:15px;">
+                <?= htmlspecialchars($_GET['erro']) ?>
+            </p>
+        <?php endif; ?>
+
         <div id="itens-carrinho">
-            <p class="vazio">Seu carrinho está vazio.</p>
+            <?php if (count($_SESSION['carrinho']) === 0): ?>
+                <p class="vazio">Seu carrinho está vazio.</p>
+            <?php else: ?>
+                <?php foreach ($_SESSION['carrinho'] as $id => $item): ?>
+                    <?php $subtotal = $item['preco'] * $item['quantidade']; ?>
+                    <div class="item-carrinho">
+                        <p><strong><?= htmlspecialchars($item['nome']) ?></strong></p>
+                        <p>
+                            <?= formatarPreco($item['preco']) ?> x <?= (int) $item['quantidade'] ?>
+                            = <?= formatarPreco($subtotal) ?>
+                        </p>
+                        <div style="display:flex; gap:8px; margin-top:10px; align-items:center;">
+                            <form method="POST" action="carrinho.php" style="display:inline;">
+                                <input type="hidden" name="produto_id" value="<?= (int) $id ?>">
+                                <input type="hidden" name="acao" value="diminuir">
+                                <button type="submit" style="padding:8px 12px;border:none;background:#e5e7eb;border-radius:8px;cursor:pointer;">-</button>
+                            </form>
+                            <form method="POST" action="carrinho.php" style="display:inline;">
+                                <input type="hidden" name="produto_id" value="<?= (int) $id ?>">
+                                <input type="hidden" name="acao" value="aumentar">
+                                <button type="submit" style="padding:8px 12px;border:none;background:#e5e7eb;border-radius:8px;cursor:pointer;">+</button>
+                            </form>
+                            <form method="POST" action="carrinho.php" style="display:inline;">
+                                <input type="hidden" name="produto_id" value="<?= (int) $id ?>">
+                                <input type="hidden" name="acao" value="remover">
+                                <button type="submit" style="padding:8px;border:none;background:red;color:white;border-radius:8px;cursor:pointer;">Remover</button>
+                            </form>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+
+                <div style="margin-top:15px; padding:15px; background:#111827; color:white; border-radius:12px; font-weight:bold;">
+                    Total: <?= formatarPreco($totalValorCarrinho) ?>
+                </div>
+
+                <form method="POST" action="finalizar_compra.php" style="margin-top:20px;">
+                    <label for="forma_pagamento" style="display:block; margin-bottom:8px; font-weight:bold;">
+                        Forma de pagamento:
+                    </label>
+                    <select name="forma_pagamento" id="forma_pagamento" required
+                        style="width:100%; padding:10px; border-radius:8px; border:1px solid #d1d5db; margin-bottom:15px;">
+                        <option value="">Selecione...</option>
+                        <option value="pix">Pix</option>
+                        <option value="cartao_credito">Cartão de Crédito</option>
+                        <option value="cartao_debito">Cartão de Débito</option>
+                        <option value="boleto">Boleto</option>
+                    </select>
+                    <button type="submit" class="botao-comprar">Finalizar Compra</button>
+                </form>
+            <?php endif; ?>
         </div>
 
     </div>
 
 </div>
 
+<script src="js/carrinho.js"></script>
+<?php if ($abrirCarrinhoAutomaticamente): ?>
 <script>
-let carrinho = [];
-
-function adicionarCarrinho(nome, preco) {
-    const valor = parseFloat(preco.replace("R$", "").replace(",", "."));
-
-    carrinho.push({ nome, preco, valor });
-    atualizarCarrinho();
-}
-
-function atualizarCarrinho() {
-    const itens = document.getElementById("itens-carrinho");
-    const contador = document.getElementById("contador-carrinho");
-
-    contador.innerText = carrinho.length;
-
-    if (carrinho.length === 0) {
-        itens.innerHTML = `<p class="vazio">Seu carrinho está vazio.</p>`;
-        return;
-    }
-
-    let total = 0;
-    itens.innerHTML = "";
-
-    carrinho.forEach((item, index) => {
-        total += item.valor;
-
-        const div = document.createElement("div");
-        div.classList.add("item-carrinho");
-
-        div.innerHTML = `
-            <p><strong>${item.nome}</strong></p>
-            <p>${item.preco}</p>
-            <button onclick="removerItem(${index})"
-                style="margin-top:10px;padding:8px;border:none;background:red;color:white;border-radius:8px;cursor:pointer;">
-                Remover
-            </button>
-        `;
-
-        itens.appendChild(div);
-    });
-
-    const totalDiv = document.createElement("div");
-    totalDiv.style.marginTop = "15px";
-    totalDiv.style.padding = "15px";
-    totalDiv.style.background = "#111827";
-    totalDiv.style.color = "white";
-    totalDiv.style.borderRadius = "12px";
-    totalDiv.style.fontWeight = "bold";
-
-    totalDiv.innerText = "Total: R$ " + total.toFixed(2).replace(".", ",");
-
-    itens.appendChild(totalDiv);
-}
-
-function removerItem(index) {
-    carrinho.splice(index, 1);
-    atualizarCarrinho();
-}
-
-function abrirCarrinho() {
-    document.getElementById("fundo-carrinho").style.display = "flex";
-}
-
-function fecharCarrinho() {
-    document.getElementById("fundo-carrinho").style.display = "none";
-}
+    abrirCarrinho();
 </script>
+<?php endif; ?>
 
 </body>
 </html>

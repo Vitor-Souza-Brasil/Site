@@ -1,0 +1,16 @@
+CREATE TABLE IF NOT EXISTS vendas (
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario VARCHAR(100) NULL,             
+    forma_pagamento VARCHAR(50) NOT NULL,   
+    total DECIMAL(10,2) NOT NULL,
+    data_venda DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS itens_venda (
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    venda_id INT NOT NULL,
+    produto VARCHAR(255) NOT NULL,
+    preco DECIMAL(10,2) NOT NULL,
+    quantidade INT NOT NULL DEFAULT 1,
+    FOREIGN KEY (venda_id) REFERENCES vendas(Id) ON DELETE CASCADE
+);
