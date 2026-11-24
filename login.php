@@ -20,6 +20,16 @@
         </p>
     <?php endif; ?>
 
+    <?php if (isset($_GET['validado'])): ?>
+        <p style="color:#4ade80; margin-bottom:15px; font-size:14px;">
+            E-mail confirmado! Agora é só entrar.
+        </p>
+    <?php elseif (isset($_GET['senha'])): ?>
+        <p style="color:#4ade80; margin-bottom:15px; font-size:14px;">
+            Senha alterada! Agora é só entrar.
+        </p>
+    <?php endif; ?>
+
     <div class="inputBox">
         <input type="text" name="login" placeholder=" " required>
         <label>Usuário</label>
@@ -31,6 +41,10 @@
     </div>
 
     <button type="submit">Entrar</button>
+
+    <p class="registrar" style="margin-top:15px;">
+        <a href="esqueceu.php">Esqueceu a senha?</a>
+    </p>
 
     <p class="registrar">
         Não tem conta?

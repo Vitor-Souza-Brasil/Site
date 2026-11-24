@@ -61,6 +61,15 @@ foreach ($_SESSION['carrinho'] as $item) {
 }
 
 $stmtItem->close();
+
+// Compra feita: limpa o carrinho que estava salvo no banco
+if ($usuario !== null) {
+    $stmtLimpa = $conexao->prepare("DELETE FROM carrinho WHERE usuario = ?");
+    $stmtLimpa->bind_param("s", $usuario);
+    $stmtLimpa->execute();
+    $stmtLimpa->close();
+}
+
 $conexao->close();
 
 $_SESSION['carrinho'] = [];

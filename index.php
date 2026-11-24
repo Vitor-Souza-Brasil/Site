@@ -60,6 +60,9 @@ $abrirCarrinhoAutomaticamente = isset($_GET['carrinho']) || isset($_GET['sucesso
                     <?php if (isset($_SESSION['usuario'])): ?>
                         <span class="login-link"><?= htmlspecialchars($_SESSION['usuario']) ?></span>
                         <a href="logout.php" class="cadastro-link">Sair</a>
+                        <?php if (!empty($_SESSION['admin'])): ?>
+                            <a href="admin.php" class="cadastro-link">Admin</a>
+                        <?php endif; ?>
                     <?php else: ?>
                         <a href="login.php" class="login-link">Efetuar Login</a>
                         <a href="cadastro1.php" class="cadastro-link">Cadastre-se</a>

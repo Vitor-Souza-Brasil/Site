@@ -1,16 +1,56 @@
 <?php
 
-include "app/cons.php";
-require_once "app/DLL.php";
+include "app/db.php";
+require_once "app/email.php";
+require_once "app/codigo.php";
 
-extract($_POST);
+$login = trim($_POST['login'] ?? '');
+$senha = $_POST['senha'] ?? '';
+$email = strtolower(trim($_POST['email'] ?? ''));
 
+function voltar($mensagem) {
+    header("Location: cadastro2.php?erro=" . urlencode($mensagem));
+    exit;
+}
+
+if ($login === '' || $senha === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    voltar("Preencha tudo e use um e-mail válido.");
+}
+
+$c = conectar();
+
+// Cadastros antigos que nunca foram confirmados são apagados (libera o usuário/e-mail)
+$st = $c->prepare("DELETE FROM loginn WHERE (login = ? OR email = ?) AND verificado = 0");
+$st->bind_param("ss", $login, $email);
+$st->execute();
+$st->close();
+
+// Usuário ou e-mail já usado por alguém?
+$st = $c->prepare("SELECT Id FROM loginn WHERE login = ? OR email = ?");
+$st->bind_param("ss", $login, $email);
+$st->execute();
+$existe = $st->get_result()->fetch_assoc();
+$st->close();
+
+if ($existe) {
+    voltar("Esse usuário ou e-mail já está cadastrado.");
+}
+
+// Salva a conta (ainda NÃO confirmada)
 $senha = md5($senha);
+$st = $c->prepare("INSERT INTO loginn (senha, login, email) VALUES (?, ?, ?)");
+$st->bind_param("sss", $senha, $login, $email);
+$st->execute();
+$st->close();
 
-$consulta = "INSERT INTO loginn (Id, senha, login) VALUES (NULL, '$senha', '$login')";
-banco($server, $user, $password, $db, $consulta);
+// Manda o código de confirmação por e-mail
+$codigo = gerar_codigo($c, $email);
+if ($codigo) {
+    enviar_email($email, "Confirme seu e-mail", "Olá, $login!\n\nSeu código de confirmação é: $codigo\n\nEle vale por 15 minutos.");
+}
+$c->close();
 
-header("Location: login.php");
+header("Location: validar.php?email=" . urlencode($email));
 exit;
 
 ?>

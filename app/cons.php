@@ -3,7 +3,11 @@
                $user = "root";
                $password = "";
                $db = "pokestore";
-               $local = ""
-               //$local = "http://192.168.1.12/carteira/validar/processar.php?matricula="
- 
+               $local = "";
+               //$local = ""
+
+$admin_email = "testevtbr@gmail.com";
+$smtp_config = "C:/Users/vitor/h/config/smtp.php";
+$loja_nome = "Minha Loja";
+
 ?>

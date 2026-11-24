@@ -9,13 +9,21 @@
 
 <body class="fundocasdois">
 
-<div class="container-cadastrodois">
+<div class="container-cadastrodois" style="height:auto;">
 
     <h2>Finalizar Cadastro</h2>
+
+    <?php if (isset($_GET['erro'])): ?>
+        <p style="color:#ef4444; margin-bottom:15px; font-size:14px; text-align:center;">
+            <?= htmlspecialchars($_GET['erro']) ?>
+        </p>
+    <?php endif; ?>
 
     <form class="form-cadastro linha" action="salvarlogin.php" method="POST">
 
     <input name="login" type="text" placeholder="Usuário" required>
+
+    <input name="email" type="email" placeholder="E-mail" required>
 
     <input name="senha" type="password" placeholder="Senha" required>
 

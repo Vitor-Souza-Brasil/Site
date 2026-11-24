@@ -1,34 +1,50 @@
 <?php
 
-include "app/cons.php";
-require_once "app/DLL.php";
+include "app/db.php";
+include "app/produtos.php";
+require_once "app/carrinho_db.php";
 
 session_start();
 
-extract($_POST);
+$login = $_POST['login'] ?? '';
+$senha = md5($_POST['senha'] ?? '');
 
-$senha = md5($senha);
+$c = conectar();
 
-$sql_verifica = "SELECT * FROM loginn WHERE login = '$login'";
-$resultado = banco($server, $user, $password, $db, $sql_verifica);
-$linha = $resultado->fetch_assoc();
+$st = $c->prepare("SELECT senha, email, verificado FROM loginn WHERE login = ?");
+$st->bind_param("s", $login);
+$st->execute();
+$linha = $st->get_result()->fetch_assoc();
+$st->close();
 
-if($linha == true){
-    $senhasalva = $linha['senha'];
-    if($senhasalva == $senha){
-
-        $_SESSION['usuario'] = $login;
-
-        header("Location: index.php");
-        exit;   
-
-    }
-
-    header("Location: login.php");
+// usuário não existe ou senha errada
+if (!$linha || !hash_equals($linha['senha'], $senha)) {
+    $c->close();
+    header("Location: login.php?erro=1");
     exit;
 }
 
-header("Location: login.php?erro=1");
+// e-mail ainda não confirmado -> vai para a tela do código
+if ($linha['verificado'] != 1) {
+    $c->close();
+    header("Location: validar.php?email=" . urlencode((string) $linha['email']));
+    exit;
+}
+
+session_regenerate_id(true);
+$_SESSION['usuario'] = $login;
+
+// é o ADM? (e-mail igual ao $admin_email do cons.php)
+if ($linha['email'] && strtolower($linha['email']) === strtolower($admin_email)) {
+    $_SESSION['admin'] = true;
+}
+
+// traz o carrinho salvo no banco e guarda o carrinho atualizado
+carrinho_carregar($c, $login, $produtos);
+carrinho_salvar($c, $login, $_SESSION['carrinho']);
+$c->close();
+
+header("Location: index.php");
 exit;
 
 ?>
