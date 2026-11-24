@@ -11,7 +11,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $c = conectar();
     $u = usuario_por_email($c, $email);
 
-    // só manda se a conta existe e já foi confirmada
     if ($u && $u['verificado'] == 1) {
         $codigo = gerar_codigo($c, $email);
         if ($codigo) {
@@ -20,7 +19,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     $c->close();
 
-    // sempre vai para a próxima tela (assim ninguém descobre quais e-mails existem)
     header("Location: redefinir.php?email=" . urlencode($email) . "&enviado=1");
     exit;
 }

@@ -2,7 +2,6 @@
 
 session_start();
 
-// só o ADM entra aqui
 if (empty($_SESSION['admin'])) {
     header("Location: index.php");
     exit;
@@ -11,16 +10,13 @@ if (empty($_SESSION['admin'])) {
 include "app/db.php";
 require_once "app/email.php";
 
-// ------------------------------------------------------------
-// 1) CADASTRAR PRODUTO COM IMAGEM  (upload como no manual do professor)
-// ------------------------------------------------------------
 if (isset($_POST['cadastrar_produto'])) {
 
     $nome = trim($_POST['nome'] ?? '');
     $preco = (float) str_replace(',', '.', $_POST['preco'] ?? '0');
     $destaque = isset($_POST['destaque']) ? 1 : 0;
 
-    $limite = 2 * 1024 * 1024; // 2 MiB
+    $limite = 2 * 1024 * 1024; 
     $tipos = [
         'image/jpeg' => 'jpg',
         'image/png'  => 'png',
@@ -38,7 +34,6 @@ if (isset($_POST['cadastrar_produto'])) {
     } else {
         $arquivo = $_FILES['imagem'];
 
-        // mensagem específica para cada erro de upload
         if ($arquivo['error'] === UPLOAD_ERR_NO_FILE) {
             $aviso = ["erro", "Nenhuma imagem foi enviada."];
 
@@ -55,7 +50,6 @@ if (isset($_POST['cadastrar_produto'])) {
             $aviso = ["erro", "A imagem deve ter até 2 MB."];
 
         } else {
-            // confere o tipo REAL do arquivo (não confia na extensão)
             $info = finfo_open(FILEINFO_MIME_TYPE);
 
             if ($info === false) {
@@ -73,7 +67,6 @@ if (isset($_POST['cadastrar_produto'])) {
                         mkdir($pasta, 0755, true);
                     }
 
-                    // nome novo, gerado pelo servidor (nunca usa o nome original)
                     $nomeNovo = bin2hex(random_bytes(16)) . "." . $tipos[$mime];
 
                     if (move_uploaded_file($arquivo['tmp_name'], $pasta . $nomeNovo)) {
@@ -100,9 +93,6 @@ if (isset($_POST['cadastrar_produto'])) {
     exit;
 }
 
-// ------------------------------------------------------------
-// 2) MANDAR E-MAIL PARA TODOS OS CLIENTES
-// ------------------------------------------------------------
 if (isset($_POST['enviar_emails'])) {
 
     set_time_limit(0);
@@ -133,7 +123,6 @@ if (isset($_POST['enviar_emails'])) {
     exit;
 }
 
-// mensagens (aparecem uma vez só)
 $aviso_produto = $_SESSION['aviso_produto'] ?? null;
 $aviso_email = $_SESSION['aviso_email'] ?? null;
 unset($_SESSION['aviso_produto'], $_SESSION['aviso_email']);

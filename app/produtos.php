@@ -13,8 +13,6 @@ $produtos = [
     8 => ["nome" => "Squirtle Aqua Edition",   "preco" => 34.90, "imagem" => "img/box5.png", "destaque" => false],
 ];
 
-// Produtos cadastrados na página de ADM (vêm do banco).
-// Se o banco falhar, o site continua mostrando só os produtos acima.
 try {
     $conexao_produtos = @new mysqli($server, $user, $password, $db);
     if (!$conexao_produtos->connect_error) {

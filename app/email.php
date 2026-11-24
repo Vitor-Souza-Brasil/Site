@@ -1,14 +1,10 @@
 <?php
-// Função única para mandar e-mail:  enviar_email($para, $assunto, $mensagem)
-// Devolve true se deu certo, false se deu erro.
-// Usa PHPMailer (Método B do manual): Gmail, porta 587, STARTTLS.
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 include_once __DIR__ . "/cons.php";
 
-// Modo teste = falta o PHPMailer (pasta vendor) ou o arquivo smtp.php
 function email_modo_teste() {
     global $smtp_config;
     return !file_exists($smtp_config) || !file_exists(__DIR__ . "/../vendor/autoload.php");
@@ -20,14 +16,12 @@ function enviar_email($para, $assunto, $mensagem) {
     if (!filter_var($para, FILTER_VALIDATE_EMAIL)) return false;
     $assunto = str_replace(["\r", "\n"], " ", $assunto);
 
-    // MODO TESTE: só salva num arquivo para você ler
     if (email_modo_teste()) {
         $texto = "[" . date("d/m/Y H:i:s") . "] PARA: $para\nASSUNTO: $assunto\n$mensagem\n----------------------------------------\n";
         file_put_contents(__DIR__ . "/emails.log", $texto, FILE_APPEND);
         return true;
     }
 
-    // MODO REAL: PHPMailer
     require_once __DIR__ . "/../vendor/autoload.php";
     $config = require $smtp_config;
 

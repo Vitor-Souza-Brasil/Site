@@ -26,12 +26,6 @@ Function banco($server, $user, $password, $db, $consulta)
 	
 	}
 	
-    
-
-// para usar o form  escreva null nos campos e botões não usados
-// $action = action do form
-// $var = campos
-// $b = botão
 function form($action,$var1,$var2,$var3,$var4,$var5,$var6,$var7,$b1,$b2,$b3){
                 echo "
                 <style type='text/css'>
@@ -98,7 +92,6 @@ function XML($label,$x1,$x2,$x3,$x4,$x5,$x6,$x7,$x8,$x9,$x10,$file){
    $xml .= '<modo>'. $label[$fim].'</modo>';
 	$xml .= '</link>';
 
-// Fechamento da raiz
 $xml .= '</links>';
 
 $fp = fopen($file, 'w+');
@@ -126,11 +119,9 @@ function recebe_doc($host_ftp, $user_ftp, $pass_ftp, $file_origem,$file_destino)
 
 function carregarXML($folder,$salvar){
    include "cons.php";
-  // Listar XMLs da pasta
   if ($handle = opendir($folder)) {
     while (false !== ($entry = readdir($handle))) {
       if ($entry != "." && $entry != "..") {
-        // Carregar XML usando o simplexml
         $ler = $folder . '/' . $entry;
         if ($ler != NULL){
           $xml = simplexml_load_file($ler);
@@ -145,15 +136,12 @@ function carregarXML($folder,$salvar){
 
 function salvarXML($server, $user, $password, $db, $xml){
 
-    // Gerar SQL de inserção no banco de dados.
     if ($xml->link->modo == "incluir") $sql = "INSERT INTO vendas (num_cartao, nome_titular, validade, cod_seguranca, num_venda, valor, cod_cliente) VALUES('".$xml->link->num_cartao."', '".$xml->link->nome."', '".$xml->link->validade."',".$xml->link->cod_seg.",".$xml->link->num_venda.",'".$xml->link->valor."',".$xml->link->cod_cliente.")";
     if ($xml->link->modo == "lista") $sql = "select * vendas order by nome_titular";
     $resultado = banco($server, $user, $password, $db, $sql);
     return $resultado;
   }
   
-
-
-
+  
 
 ?>

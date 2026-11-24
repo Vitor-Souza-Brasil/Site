@@ -52,7 +52,6 @@ function processarAcaoCarrinho(array $produtos, array $post): void {
 
 processarAcaoCarrinho($produtos, $_POST);
 
-// Se a pessoa está logada, guarda o carrinho no banco
 if (isset($_SESSION['usuario'])) {
     include "app/db.php";
     require_once "app/carrinho_db.php";

@@ -13,7 +13,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $c = conectar();
 
     if (isset($_POST['reenviar'])) {
-        // botão "Reenviar código"
         $u = usuario_por_email($c, $email);
         if ($u && $u['verificado'] == 0) {
             $codigo = gerar_codigo($c, $email);
@@ -28,7 +27,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
     } elseif (conferir_codigo($c, $email, $_POST['codigo'] ?? '')) {
-        // código certo: conta confirmada
         $st = $c->prepare("UPDATE loginn SET verificado = 1, codigo = NULL, tentativas = 0 WHERE email = ?");
         $st->bind_param("s", $email);
         $st->execute();

@@ -19,13 +19,11 @@ if ($login === '' || $senha === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)
 
 $c = conectar();
 
-// Cadastros antigos que nunca foram confirmados são apagados (libera o usuário/e-mail)
 $st = $c->prepare("DELETE FROM loginn WHERE (login = ? OR email = ?) AND verificado = 0");
 $st->bind_param("ss", $login, $email);
 $st->execute();
 $st->close();
 
-// Usuário ou e-mail já usado por alguém?
 $st = $c->prepare("SELECT Id FROM loginn WHERE login = ? OR email = ?");
 $st->bind_param("ss", $login, $email);
 $st->execute();
@@ -36,14 +34,12 @@ if ($existe) {
     voltar("Esse usuário ou e-mail já está cadastrado.");
 }
 
-// Salva a conta (ainda NÃO confirmada)
 $senha = md5($senha);
 $st = $c->prepare("INSERT INTO loginn (senha, login, email) VALUES (?, ?, ?)");
 $st->bind_param("sss", $senha, $login, $email);
 $st->execute();
 $st->close();
 
-// Manda o código de confirmação por e-mail
 $codigo = gerar_codigo($c, $email);
 if ($codigo) {
     enviar_email($email, "Confirme seu e-mail", "Olá, $login!\n\nSeu código de confirmação é: $codigo\n\nEle vale por 15 minutos.");
